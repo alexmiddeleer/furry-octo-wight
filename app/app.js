@@ -3,7 +3,7 @@ angular.module('myApp', ['myAppControllers','ngRoute']);
 angular.module('myApp')
    .controller('app-ctrl', function($scope) {
       $scope.aThing = "something";
-      $scope.aTool = "AngularJS";
+      $scope.aTool = "AngularJS, Bootstrap, and Lodash";
    });
 
 angular.module('myAppControllers', []);
