@@ -8,7 +8,7 @@ angular.module('myApp')
          text:'Home',
          href:'#'
       },{
-         text:'A Page',
+         text:'A thing',
          href:'#/view1/'
       }]
    });
