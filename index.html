@@ -14,14 +14,16 @@
    </head>
    <body class="container" ng-controller="app-ctrl">
       <div class="banner">
-         <h1>Banner</h1>
-      </div>
-      <div class="banner-links">
-         <ul class="list-inline">
-            <li ng-repeat="link in bannerLinks">
-               <a ng-href="{{link.href}}">{{link.text}}</a>
-            </li>
-         </ul>
+         <div class="banner-brand">
+            <h1>MyApp</h1>
+         </div>
+         <div class="banner-links">
+            <ul class="list-inline">
+               <li ng-repeat="link in bannerLinks">
+                  <a ng-href="{{link.href}}">{{link.text}}</a>
+               </li>
+            </ul>
+         </div>
       </div>
       <div class="content">
          <ng-view>
