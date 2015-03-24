@@ -13,18 +13,7 @@
       <script src="app/app.js"></script>
    </head>
    <body class="container" ng-controller="app-ctrl">
-      <div class="banner">
-         <div class="banner-brand">
-            <h1>MyApp</h1>
-         </div>
-         <div class="banner-links">
-            <ul class="list-inline">
-               <li ng-repeat="link in bannerLinks">
-                  <a ng-href="{{link.href}}">{{link.text}}</a>
-               </li>
-            </ul>
-         </div>
-      </div>
+      <ng-include src="'app/views/banner.html'"></ng-include>
       <div class="content">
          <ng-view>
          </ng-view>
