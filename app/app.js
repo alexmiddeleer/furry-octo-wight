@@ -4,6 +4,13 @@ angular.module('myApp')
    .controller('app-ctrl', function($scope) {
       $scope.aThing = "something";
       $scope.aTool = "AngularJS, Bootstrap, and Lodash";
+      $scope.bannerLinks = [{
+         text:'Home',
+         href:'#'
+      },{
+         text:'A Page',
+         href:'#/view1/'
+      }]
    });
 
 angular.module('myAppControllers', []);
@@ -14,7 +21,7 @@ angular.module('myAppControllers')
 
 angular.module('myApp')
    .config(['$routeProvider', function($routeProvider) {
-      $routeProvider.when('/',{
+      $routeProvider.when('',{
          templateUrl: 'app/views/home.html',
          controller: 'app-ctrl'
       });

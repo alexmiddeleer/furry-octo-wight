@@ -16,7 +16,16 @@
       <div class="banner">
          <h1>Banner</h1>
       </div>
-      <ng-view>
-      </ng-view>
+      <div class="banner-links">
+         <ul class="list-inline">
+            <li ng-repeat="link in bannerLinks">
+               <a ng-href="{{link.href}}">{{link.text}}</a>
+            </li>
+         </ul>
+      </div>
+      <div class="content">
+         <ng-view>
+         </ng-view>
+      </div>
    </body>
 </html>
