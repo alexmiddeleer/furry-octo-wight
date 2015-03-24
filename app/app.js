@@ -1,36 +1,43 @@
 angular.module('myApp', ['myAppControllers','ngRoute']);
 
 angular.module('myApp')
-   .controller('app-ctrl', function($scope) {
-      $scope.aThing = "something";
-      $scope.aTool = "AngularJS, Bootstrap, and Lodash";
-      $scope.bannerLinks = [{
+   .constant('myAppLinks', {
+      home: {
          text:'Home',
          href:'#'
-      },{
+      },
+      view: {
          text:'A thing',
-         href:'#/view1/'
-      }]
+         href:'#/view/'
+   }});
+
+angular.module('myApp')
+   .controller('appCtrl', function($scope, myAppLinks) {
+      $scope.bannerLinks = myAppLinks;
    });
 
 angular.module('myAppControllers', []);
 angular.module('myAppControllers')
-   .controller('view1-ctrl', function($scope) {
+   .controller('view1Ctrl', function($scope) {
+      $scope.aThing = "something";
+      $scope.aTool = "AngularJS, Bootstrap, and Lodash";
+   })
+   .controller('view2Ctrl', function($scope) {
       $scope.whereAmI = 'I am in the other view';
-   });
+   })
 
 angular.module('myApp')
    .config(['$routeProvider', function($routeProvider) {
-      $routeProvider.when('',{
+      $routeProvider.when( '', {
          templateUrl: 'app/views/home.html',
-         controller: 'app-ctrl'
+         controller: 'view1Ctrl'
       });
-      $routeProvider.when('/view1/',{
+      $routeProvider.when( '/view' ,{
          templateUrl: 'app/views/view.html',
-         controller: 'view1-ctrl'
+         controller: 'view2Ctrl'
       });
       $routeProvider.otherwise({
          templateUrl: 'app/views/home.html',
-         controller: 'app-ctrl'
+         controller: 'view1Ctrl'
       });
    }]);
