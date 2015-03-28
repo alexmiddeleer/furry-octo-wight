@@ -1,1 +1,6 @@
-<h2>Time to make {{aThing}} with {{aTool}}</h2>
+<div class="grid">
+   <div class="grid-row" ng-repeat="row in grid">
+      <div ng-bind-html="getSymbol(square.symbol)" class="grid-square" ng-repeat="square in row">
+      </div>
+   </div>
+</div>
