@@ -7,6 +7,7 @@
       <div ng-bind-html="getSymbol(square.symbol)" 
            ng-class="['grid-square', square.background]" 
            ng-mouseover="board.mouseCoords=[square.x, square.y];"
+           ng-click="square.click && square.click()"
            ng-repeat="square in row">
       </div>
    </div>

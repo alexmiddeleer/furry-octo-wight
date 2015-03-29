@@ -1,23 +1,30 @@
 angular.module('Grid', []);
 angular.module('Grid').service('Grid', function() {
-   var grid = []
-     , exports = {}
+   var exports = {} 
+     , that = {}
    
-   exports.init = function(size, squareInit) {
-      for (var i = 0; i < size; i++) {
-         grid.push([]);
-         for (var j = 0; j < size; j++) {
-            if (squareInit) {
-               grid[i].push(squareInit(j,i));
-            } else {
-               grid[i].push({});
-            }
+   exports.init = function(size) {
+      that.size = size;
+      that.grid = [];
+      for (var y = 0; y < that.size; y++) {
+         that.grid.push([]);
+         for (var x = 0; x < that.size; x++) {
+            that.grid[y].push({x:x, y:y});
          }
       }
+      return this;
    }
  
    exports.getGrid = function() {
-      return angular.copy(grid);
+      return angular.copy(that.grid);
+   }
+
+   exports.forEach = function(f) {
+      for (var y = 0; y < that.size; y++) {
+         for (var x = 0; x < that.size; x++) {
+            f(that.grid[x][y]);
+         }
+      }
    }
 
    return exports;
