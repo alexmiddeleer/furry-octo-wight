@@ -26,21 +26,22 @@ angular.module('myApp')
    }])
 ;
 
-angular.module('myAppControllers', ['grid']);
+angular.module('myAppControllers', ['Grid']);
 angular.module('myAppControllers')
-   .controller('viewCtrl', function($scope, boardSize, $sce, grid) {
+   .controller('viewCtrl', function($scope, boardSize, $sce, Grid) {
 
-      grid.init(boardSize, function(x, y) {
+      Grid.init(boardSize, function(x, y) {
          var k = ( y % 2 === 0 ? 0 : 1 );
          var black = (((y*boardSize)+x+k)%2 === 0);
          return {
             x:x,
             y:y,
+            click:function() {alert(this.x + ' ' + this.y);},
             background:  black ? 'black-space' : 'white-space'
          };
       });
 
-      $scope.grid = grid.getGrid();
+      $scope.grid = Grid.getGrid();
       $scope.getSymbol = function(square) {
          return $sce.trustAsHtml( square );
       };
