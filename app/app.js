@@ -32,12 +32,23 @@ angular.module('myAppControllers')
 
       var game = Game.init()
       game.styleSquares( function(square) {
-         square.background = Game.isBlack( square ) ? 
+         square.background = Game.isBlack( square ) ?
             'black-space' : 'white-space';
       })
 
       Game.startGame();
-      
+      $scope.message = 'It is ' + Game.whoseTurn().name + '\'s turn.';
+
+      var roundOverCB = function() {
+         $scope.grid = game.getGrid();
+         $scope.message = 'It is ' + Game.whoseTurn().name + '\'s turn.';
+      }
+
+      var gameOverCB = function() {
+         $scope.grid = game.getGrid();
+         $scope.message = 'Game Over! The winner is ' + Game.whoWon().name;
+      }
+
       $scope.grid = game.getGrid();
       $scope.getSymbol = function(square) {
          return $sce.trustAsHtml( square );
