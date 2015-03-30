@@ -33,28 +33,26 @@ angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING,
    that.setUpPieces = function() {
       Grid.forEach(function(square) {
          if (square.y < 3) {
-            square.piece = {};
             if (!ex.isBlack(square)) {
-               square.piece.symbol = WHITE_PIECE,
-               square.piece.owner = WHITE_PLAYER
+               square.symbol = WHITE_PIECE,
+               square.owner = WHITE_PLAYER
             }
          }
          if (BOARDSIZE - square.y < 4) {
-            square.piece = {};
             if (!ex.isBlack(square)) {
-               square.piece.symbol = BLACK_PIECE,
-               square.piece.owner = BLACK_PLAYER
+               square.symbol = BLACK_PIECE,
+               square.owner = BLACK_PLAYER
             }
          }
       });
    }
 
    that.hasBlackPiece = function(square) {
-      return square.piece && square.piece.symbol === BLACK_PIECE;
+      return square.symbol === BLACK_PIECE;
    }
 
    that.hasWhitePiece = function(square) {
-      return square.piece && square.piece.symbol === WHITE_PIECE;
+      return square.symbol === WHITE_PIECE;
    }
 
    ex.getGrid = Grid.getGrid;
@@ -110,27 +108,18 @@ angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING,
    ex.pieceChosen = function(square) {
       if (ex.pieceIsMoveable(square)) {
          Grid.forEach(function(square) {
-            if (square.piece) {
-               square.piece.isSelected = false;
-            }
+            square.isSelected = false;
          });
-         square.piece.isSelected = true;
+         square.isSelected = true;
          that.selectedPiece = square;
       } else if ( ex.squareIsReachable(square)){
-         square.piece = angular.copy(that.selectedPiece.piece);
-         that.selectedPiece.piece = null;
-         Grid.forEach(function(square) {
-            if (square.piece) {
-               square.piece.isSelected = false;
-            }
-         });
-         Logger.log(ex.getGrid());
+         
       }
    }
 
    ex.pieceIsMoveable = function(square) {
-      if (square.piece && square.piece.owner) {
-         if (square.piece.owner === ex.whoseTurn().name) {
+      if (square.owner) {
+         if (square.owner === ex.whoseTurn().name) {
             return true;
          }
       }
@@ -138,16 +127,16 @@ angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING,
    }
 
    ex.whoseTurn = function() {
-      return (that.players[ that.turn % NUM_PLAYERS ]);
+      return angular.copy(that.players[ that.turn % NUM_PLAYERS ]);
    }
 
    ex.isKing = function(square) {
-      return square.piece && square.piece.symbol && (square.piece.symbol === BLACK_KING || 
-             square.piece.symbol === WHITE_KING );
+      return square.symbol && (square.symbol === BLACK_KING || 
+             square.symbol === WHITE_KING );
    }
 
    ex.isOccupied = function(square) {
-      return square.piece && square.piece.symbol && square.piece.symbol !== '';
+      return square.symbol && square.symbol !== '';
    }
 
    ex.playerDir = function() {

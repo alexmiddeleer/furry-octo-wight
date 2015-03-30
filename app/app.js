@@ -37,7 +37,7 @@ angular.module('myAppControllers')
       })
 
       $scope.getSquareBackground = function(square){
-         if (Game.pieceIsMoveable(square) && square.piece.isSelected) {
+         if (Game.pieceIsMoveable(square) && square.isSelected) {
             return 'selected-space';
          }
          if (Game.pieceIsMoveable(square) && square.mouseOver) {

@@ -8,7 +8,7 @@
    <div>{{message}}</div>
    <div class="grid">
       <div class="grid-row" ng-repeat="row in grid">
-         <div ng-bind-html="getSymbol(square.piece.symbol)" 
+         <div ng-bind-html="getSymbol(square.symbol)" 
               ng-class="['grid-square', square.background, getSquareBackground(square)]" 
               ng-mouseenter="square.mouseOver=true"
               ng-mouseleave="square.mouseOver=false"
