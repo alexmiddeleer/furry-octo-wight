@@ -41,10 +41,7 @@ angular.module('myAppControllers')
             return 'selected-space';
          }
          if (Game.pieceIsMoveable(square) && square.mouseOver) {
-            return 'selectable-space';
-         }
-         if (Game.squareIsReachable(square) && square.mouseOver) {
-            return 'selectable-space';
+            return 'usable-space';
          }
       }
 
