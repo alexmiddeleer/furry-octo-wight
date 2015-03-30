@@ -1,13 +1,6 @@
-<button class="button" >Start Game</button>
-<br>
-<br>
-<div class="grid" ng-controller="BoardController as board">
-   <span ng-init="board.mouseCoords=[-1,-1]">{{board.mouseCoords}}</span>
+<div class="grid">
    <div class="grid-row" ng-repeat="row in grid">
-      <div ng-bind-html="getSymbol(square.symbol)" 
-           ng-class="['grid-square', square.background]" 
-           ng-mouseover="board.mouseCoords=[square.x, square.y];"
-           ng-repeat="square in row">
+      <div ng-bind-html="getSymbol(square.symbol)" class="grid-square" ng-repeat="square in row">
       </div>
    </div>
 </div>
