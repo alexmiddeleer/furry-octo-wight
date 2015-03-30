@@ -111,8 +111,10 @@ angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING,
             square.isSelected = false;
          });
          square.isSelected = true;
+         that.selectedPiece = square;
+      } else if ( ex.squareIsReachable(square)){
+         
       }
-      console.log(Grid.getGrid());
    }
 
    ex.pieceIsMoveable = function(square) {
@@ -126,6 +128,48 @@ angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING,
 
    ex.whoseTurn = function() {
       return angular.copy(that.players[ that.turn % NUM_PLAYERS ]);
+   }
+
+   ex.isKing = function(square) {
+      return square.symbol && (square.symbol === BLACK_KING || 
+             square.symbol === WHITE_KING );
+   }
+
+   ex.isOccupied = function(square) {
+      return square.symbol && square.symbol !== '';
+   }
+
+   ex.playerDir = function() {
+      if (ex.whoseTurn().name === WHITE_PLAYER) {
+         return -1
+      } else {
+         return 1;
+      }
+   }
+
+   ex.moveIsDiagonal = function(square) {
+      var x2 = that.selectedPiece.x - square.x
+        , y2 = that.selectedPiece.y - square.y
+      return (((x2 + y2) % 2 ) === 0) &&
+             (Math.abs(x2) + Math.abs(y2) < 3)
+   }
+
+   ex.moveIsDiagonalForward = function(square) {
+      var x2 = that.selectedPiece.x - square.x
+        , y2 = that.selectedPiece.y - square.y
+      return ex.moveIsDiagonal(square) && (y2 === ex.playerDir());
+   }
+
+   ex.squareIsReachable = function(square) {
+      if (that.selectedPiece) {
+         if (!ex.isOccupied(square)) {
+            if (ex.isKing(square)) {
+               return ex.moveIsDiagonal(square);
+            } else {
+               return ex.moveIsDiagonalForward(square);
+            }
+         }
+      }
    }
 
    return ex;
