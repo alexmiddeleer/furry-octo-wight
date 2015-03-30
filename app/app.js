@@ -7,7 +7,7 @@ angular.module('myApp')
          href:'#'
       }
    })
-   .constant('BOARDSIZE', 8)
+   .constant('boardSize', 8)
 ;
 
 angular.module('myApp')
@@ -26,20 +26,24 @@ angular.module('myApp')
    }])
 ;
 
-angular.module('myAppControllers', ['Game']);
+angular.module('myAppControllers', ['Grid']);
 angular.module('myAppControllers')
-   .controller('viewCtrl', function($scope, $sce, Game) {
+   .controller('viewCtrl', function($scope, boardSize, $sce, Grid) {
 
-      var game = Game.init()
-      game.styleSquares( function(square) {
-         square.background = Game.isBlack( square ) ? 
-            'black-space' : 'white-space';
-      })
+      Grid.init(boardSize, function(x, y) {
+         var k = ( y % 2 === 0 ? 0 : 1 );
+         var black = (((y*boardSize)+x+k)%2 === 0);
+         return {
+            x:x,
+            y:y,
+            click:function() {alert(this.x + ' ' + this.y);},
+            background:  black ? 'black-space' : 'white-space'
+         };
+      });
 
-      Game.startGame();
-      
-      $scope.grid = game.getGrid();
+      $scope.grid = Grid.getGrid();
       $scope.getSymbol = function(square) {
          return $sce.trustAsHtml( square );
       };
-   });
+   })
+
