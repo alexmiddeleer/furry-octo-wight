@@ -16,7 +16,7 @@ angular.module('Grid').service('Grid', function() {
    }
  
    exports.getGrid = function() {
-      return that.grid;
+      return angular.copy(that.grid);
    }
 
    exports.forEach = function(f) {
