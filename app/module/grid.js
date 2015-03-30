@@ -1,5 +1,5 @@
-angular.module('Grid', []);
-angular.module('Grid').service('Grid', function() {
+angular.module('grid', []);
+angular.module('grid').service('grid', function() {
    var grid = []
      , exports = {}
    
