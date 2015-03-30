@@ -1,4 +1,4 @@
-angular.module('Game', ['myApp', 'Grid']);
+angular.module('Game', ['myApp', 'Grid', 'Logger', 'Player']);
 angular.module('Game').constant('WHITE_PIECE', '\u26C0')
                       .constant('WHITE_KING', '\u26C1')
                       .constant('BLACK_PIECE', '\u26C2')
@@ -6,8 +6,11 @@ angular.module('Game').constant('WHITE_PIECE', '\u26C0')
                       .constant('BLACK_WINS', 1)
                       .constant('WHITE_WINS', 2)
                       .constant('NUM_PLAYERS', 2)
+                      .constant('WHITE_PLAYER', 'White Player')
+                      .constant('BLACK_PLAYER', 'Black Player')
 angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING, 
-   BLACK_PIECE, BLACK_KING, BOARDSIZE, BLACK_WINS, WHITE_WINS, NUM_PLAYERS) {
+   BLACK_PIECE, BLACK_KING, BOARDSIZE, BLACK_WINS, WHITE_WINS, NUM_PLAYERS, 
+   Logger, Player, WHITE_PLAYER, BLACK_PLAYER) {
    var ex = {}
      , that = {}
 
@@ -31,12 +34,14 @@ angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING,
       Grid.forEach(function(square) {
          if (square.y < 3) {
             if (!ex.isBlack(square)) {
-               square.symbol = WHITE_PIECE
+               square.symbol = WHITE_PIECE,
+               square.owner = WHITE_PLAYER
             }
          }
          if (BOARDSIZE - square.y < 4) {
             if (!ex.isBlack(square)) {
-               square.symbol = BLACK_PIECE
+               square.symbol = BLACK_PIECE,
+               square.owner = BLACK_PLAYER
             }
          }
       });
@@ -55,9 +60,9 @@ angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING,
    ex.startGame = function() {
       that.setUpPieces();
       that.players = [{
-         name: 'Player 1',
+         name: WHITE_PLAYER,
       },{
-         name: 'Player 2'
+         name: BLACK_PLAYER 
       }];
       that.turn = 0;
    }
@@ -81,7 +86,8 @@ angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING,
    }
 
    that.makeMove = function(player, cb) {
-      
+      Logger.log('Waiting for ' + player.name + ' to make a move');
+      //Player.requestMove();
    }
 
    ex.gameLoop = function(roundOverCB, gameOverCB) {
@@ -90,13 +96,32 @@ angular.module('Game').service('Game', function(Grid, WHITE_PIECE, WHITE_KING,
          gameOverCB(gameStatus);
          return this;
       } else {
-         var player = ex.whoseTurn;
+         var player = ex.whoseTurn();
          that.makeMove( player, function(move) {
             that.turn++;
             roundOverCB();
             ex.gameLoop();
          });
       }
+   }
+
+   ex.pieceChosen = function(square) {
+      if (ex.pieceIsMoveable(square)) {
+         Grid.forEach(function(square) {
+            square.isSelected = false;
+         });
+         square.isSelected = true;
+      }
+      console.log(Grid.getGrid());
+   }
+
+   ex.pieceIsMoveable = function(square) {
+      if (square.owner) {
+         if (square.owner === ex.whoseTurn().name) {
+            return true;
+         }
+      }
+      return false;
    }
 
    ex.whoseTurn = function() {

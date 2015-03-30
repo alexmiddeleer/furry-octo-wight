@@ -26,30 +26,43 @@ angular.module('myApp')
    }])
 ;
 
-angular.module('myAppControllers', ['Game']);
+angular.module('myAppControllers', ['Game', 'Logger']);
 angular.module('myAppControllers')
-   .controller('viewCtrl', function($scope, $sce, Game) {
+   .controller('viewCtrl', function($scope, $sce, Game, Logger, Grid) {
 
-      var game = Game.init()
-      game.styleSquares( function(square) {
+      Game.init()
+      Game.styleSquares( function(square) {
          square.background = Game.isBlack( square ) ?
             'black-space' : 'white-space';
       })
+
+      $scope.getSquareBackground = function(square){
+         if (Game.pieceIsMoveable(square) && square.isSelected) {
+            return 'selected-space';
+         }
+         if (Game.pieceIsMoveable(square) && square.mouseOver) {
+            return 'usable-space';
+         }
+      }
+
+      $scope.squareClicked = function(square) {
+         Logger.log(square.x + ', ' + square.y +  ' was clicked');
+         Game.pieceChosen(square);
+      }
 
       Game.startGame();
       $scope.message = 'It is ' + Game.whoseTurn().name + '\'s turn.';
 
       var roundOverCB = function() {
-         $scope.grid = game.getGrid();
          $scope.message = 'It is ' + Game.whoseTurn().name + '\'s turn.';
       }
 
       var gameOverCB = function() {
-         $scope.grid = game.getGrid();
          $scope.message = 'Game Over! The winner is ' + Game.whoWon().name;
       }
 
-      $scope.grid = game.getGrid();
+      $scope.grid = Game.getGrid();
+      Game.gameLoop();
       $scope.getSymbol = function(square) {
          return $sce.trustAsHtml( square );
       };
